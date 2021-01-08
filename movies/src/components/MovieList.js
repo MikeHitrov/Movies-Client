@@ -16,7 +16,6 @@ class Movies extends React.Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           this.setState({
             movies: result,
           });
@@ -28,9 +27,17 @@ class Movies extends React.Component {
           });
         }
       );
-
-    console.log(this.state.movies);
   }
+
+  deleteMovie = (id) => {
+    fetch(apiURL + id, {
+      method: "DELETE",
+    })
+      .then(
+        this.setState({ movies: this.state.movies.filter((m) => m.id !== id) })
+      )
+      .catch((err) => console.log(err));
+  };
 
   render() {
     return (
@@ -45,9 +52,13 @@ class Movies extends React.Component {
                 </div>
                 <p className="mb-1">Director: {data.director}</p>
                 <p className="mb-1">Genre: {data.genre}</p>
-                <p className="mb-1">Actors: {data.actors}</p>
+                <p className="mb-1">Actors: {data.actors.join(", ")}</p>
                 <MDBBtn gradient="blue">Edit</MDBBtn>
-                <MDBBtn outline color="danger">
+                <MDBBtn
+                  outline
+                  color="danger"
+                  onClick={() => this.deleteMovie(data.id)}
+                >
                   Delete
                 </MDBBtn>
               </MDBListGroupItem>
