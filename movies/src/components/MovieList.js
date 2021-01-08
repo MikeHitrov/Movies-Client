@@ -30,13 +30,17 @@ class Movies extends React.Component {
   }
 
   deleteMovie = (id) => {
-    fetch(apiURL + id, {
-      method: "DELETE",
-    })
-      .then(
-        this.setState({ movies: this.state.movies.filter((m) => m.id !== id) })
-      )
-      .catch((err) => console.log(err));
+    if (window.confirm("Delete the item?")) {
+      fetch(apiURL + id, {
+        method: "DELETE",
+      })
+        .then(
+          this.setState({
+            movies: this.state.movies.filter((m) => m.id !== id),
+          })
+        )
+        .catch((err) => console.log(err));
+    }
   };
 
   render() {
